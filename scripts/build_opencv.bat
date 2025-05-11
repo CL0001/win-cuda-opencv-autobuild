@@ -1,5 +1,8 @@
 @echo off
 
+set GPU_ARCHITECTURES=7.5,8.6,8.9,12.0
+set NUMBER_OF_CORES=12
+
 set START_TIME=%time%
 
 if not exist ..\dependencies\opencv_src\opencv (
@@ -37,12 +40,12 @@ if not exist ..\dependencies\opencv_build (
     -DWITH_TIFF=ON ^
     -DWITH_WEBP=ON ^
     -DWITH_OPENEXR=ON ^
-    -DCUDA_ARCH_BIN=7.5 ^
-    -DCUDA_ARCH_PTX=7.5 ^
+    -DCUDA_ARCH_BIN=%GPU_ARCHITECTURES% ^
+    -DCUDA_ARCH_PTX=%GPU_ARCHITECTURES% ^
     -DCMAKE_CONFIGURATION_TYPES=Release ^
     -DCMAKE_BUILD_TYPE=Release
 
-    cmake --build ..\dependencies\opencv_build --target INSTALL --config Release --parallel 12
+    cmake --build ..\dependencies\opencv_build --target INSTALL --config Release --parallel %NUMBER_OF_CORES%
 ) else (
     echo ..\dependencies\opencv_build already exists
 )
